@@ -95,4 +95,6 @@ group :development, :test do
 
   # Adding this Gem for Code Coverage - Team Jones
   gem 'simplecov'
+
+  gem 'strong_parameters'
 end

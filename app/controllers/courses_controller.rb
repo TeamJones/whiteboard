@@ -163,7 +163,7 @@ class CoursesController < ApplicationController
     params[:course][:faculty_assignments_override] = params[:teachers]
     respond_to do |format|
       @course.updated_by_user_id = current_user.id if current_user
-      @course.attributes = params[:course]
+      @course.attributes = course_params
       if @course.save
         flash[:notice] = 'Course was successfully updated.'
         format.html { redirect_back_or_default(course_path(@course)) }
@@ -245,5 +245,9 @@ class CoursesController < ApplicationController
       format.html { render :action => "index" }
       format.xml { render :xml => @courses }
     end
+  end
+
+  def course_params
+    params.require(:course).permit(:number,:short_name,:name,:semester,:mini, :year)
   end
 end
