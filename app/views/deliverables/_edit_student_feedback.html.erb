@@ -130,17 +130,19 @@
         </div>
       </div>
       <hr>
-      <div class="row">
-        <div class="col-md-12">
-          <div class="alert alert-success">
-            <h4 style="color: #900;"><%= professor_image %> Professor&#39;s Notes
-              <span class="label label-success" style="font-weight: normal;">Only faculty can see this information</span></h4>
-            <p>
-              <%= f.text_area :private_note, :size => "80x10" %>
-            </p>
+      <% if current_user && !current_user.is_student %>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="alert alert-success">
+                <h4 style="color: #900;"><%= professor_image %> Professor&#39;s Notes
+                  <span class="label label-success" style="font-weight: normal;">Only faculty can see this information</span></h4>
+                <p>
+                  <%= f.text_area :private_note, :size => "80x10" %>
+                </p>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+      <% end %>
 
       <div class="row" style="padding-top: 10px;">
         <div class="col-md-12" id="deliverable_submit_draft">
