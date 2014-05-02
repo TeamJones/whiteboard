@@ -29,10 +29,7 @@
                 $(".letter").each(function(){
                     var max = $(this).parents("tr").prev("tr").find(".letter").val();
                     var min = $(this).parents("tr").next("tr").find(".letter").val();
-                    if(max!=undefined && $(this).val() >= max){
-                        error = "The grading criteria should be in decending order.";
-                    }
-                    if($(this).val() <= min){
+                    if((max != undefined && $(this).val() >= max) || ($(this).val() <= min)) {
                         error = "The grading criteria should be in decending order.";
                     }
                 });
