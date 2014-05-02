@@ -13,9 +13,6 @@ describe Deliverable do
       @deliverable = FactoryGirl.build(:deliverable)
     end
 
-    it " should check for nil values when updating grade" do
-      @deliverable.update_grade(nil, true, 1).should == ["Trying to update grade with nil parameters!"];
-    end
 
   end
 
@@ -397,6 +394,25 @@ describe Deliverable do
     end
 
 
+  end
+
+  context " updating grade" do
+    before (:each) do
+      @deliverable = FactoryGirl.build(:team_deliverable)
+      @team_member_0 = @deliverable.team.members[0]
+      @team_member_1 = @deliverable.team.members[1]
+    end
+
+    it " should check for nil parameters" do
+      @deliverable.update_grade(nil, true, 1).should_not == [];
+    end
+
+    
+    it " should check for nil score" do
+      pending('params[:"#{user.id}"] causes problems')
+      params = [:"1" => 0]
+      @deliverable.update_grade(3, true, 2).should_not == [];
+    end
   end
 
 end
