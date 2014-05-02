@@ -192,6 +192,8 @@ class CoursesController < ApplicationController
     @course = Course.find(params[:course_id])
     authorize! :team_formation, @course
 
+    flash[:error] = 'There are no teams to display in the team formation tool.' if @teams.nil?
+
     respond_to do |format|
       format.html { render :html => @teams, :layout => "cmu_sv" } # index.html.erb
       format.xml { render :xml => @teams }
