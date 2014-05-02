@@ -136,7 +136,7 @@ class CoursesController < ApplicationController
 
 
     @course.updated_by_user_id = current_user.id if current_user
-    @course.attributes = params[:course]
+    @course.attributes = course_params
 
     respond_to do |format|
       if @course.save
