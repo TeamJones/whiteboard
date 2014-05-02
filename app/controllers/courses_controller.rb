@@ -133,9 +133,11 @@ class CoursesController < ApplicationController
     end
 
     params[:course][:faculty_assignments_override] = params[:teachers]
+
+    @course.updated_by_user_id = current_user.id if current_user
+    @course.attributes = params[:course]
+
     respond_to do |format|
-      @course.updated_by_user_id = current_user.id if current_user
-      @course.attributes = params[:course]
       if @course.save
         flash[:notice] = 'Course was successfully updated.'
         format.html { redirect_back_or_default(course_path(@course)) }
