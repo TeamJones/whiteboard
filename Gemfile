@@ -92,4 +92,9 @@ group :development, :test do
 
   gem 'selenium-webdriver'
   gem 'rails_best_practices'
+
+  # Adding this Gem for Code Coverage - Team Jones
+  gem 'simplecov'
+
+  gem 'strong_parameters'
 end
