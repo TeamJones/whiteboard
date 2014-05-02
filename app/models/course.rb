@@ -257,7 +257,6 @@ class Course < ActiveRecord::Base
     next_year = year + 1
     if Course.for_semester(semester, next_year).empty?
       Course.for_semester(semester, year).each do |last_year_course|
-        puts last_year_course.id
         next_year_course = last_year_course.copy_as_new_course
         next_year_course.peer_evaluation_first_email += 1.year if next_year_course.peer_evaluation_first_email
         next_year_course.peer_evaluation_second_email += 1.year if next_year_course.peer_evaluation_second_email
