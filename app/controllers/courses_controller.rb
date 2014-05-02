@@ -139,8 +139,6 @@ class CoursesController < ApplicationController
     @course.attributes = course_params
 
     respond_to do |format|
-      @course.updated_by_user_id = current_user.id if current_user
-      @course.attributes = course_params
       if @course.save
         flash[:notice] = 'Course was successfully updated.'
         format.html { redirect_back_or_default(course_path(@course)) }
