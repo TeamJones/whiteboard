@@ -77,10 +77,6 @@ class Course < ActiveRecord::Base
     validate_members :faculty_assignments_override
   end
 
-#  def to_param
-#    display_course_name
-#  end
-
   def display_course_name
     mini_text = self.mini == "Both" ? "" : self.mini
     result = self.short_or_full_name + self.semester + mini_text + self.year.to_s
