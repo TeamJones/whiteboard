@@ -447,12 +447,14 @@ class Deliverable < ActiveRecord::Base
   end
 
   def last_graded_by_for_every_individual(student_id)
-    return :unknonwn if self.assignment.nil? #(guard for old deliverables)
-    grade = Grade.get_grade(self.course.id, self.assignment.id, student_id)
-    if grade.nil?
-      return nil
-    else
-      return User.find_by_id(grade.last_graded_by) unless grade.last_graded_by.nil?
+    unless (student_id.nil?)
+      return :unknonwn if self.assignment.nil? #(guard for old deliverables)
+      grade = Grade.get_grade(self.course.id, self.assignment.id, student_id)
+      if grade.nil?
+        return nil
+      else
+        return User.find_by_id(grade.last_graded_by) unless grade.last_graded_by.nil?
+      end
     end
   end
 
