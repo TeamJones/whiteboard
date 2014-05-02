@@ -12,6 +12,11 @@ describe Deliverable do
     before(:each) do
       @deliverable = FactoryGirl.build(:deliverable)
     end
+
+    it " should check for nil values when updating grade" do
+      @deliverable.update_grade(nil, true, 1).should == ["Trying to update grade with nil parameters!"];
+    end
+
   end
 
   context "is not valid" do

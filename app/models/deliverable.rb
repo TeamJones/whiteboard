@@ -350,6 +350,11 @@ class Deliverable < ActiveRecord::Base
   # To update the grade received by the student
   def update_grade(params, is_student_visible, current_user_id)
     error_msg = []
+    if (params.nil? || is_student_visible.nil? || current_user_id.nil?)
+      error_msg << "Trying to update grade with nil parameters!"
+      return error_msg
+    end
+
     if self.assignment.is_team_deliverable?
       self.team.members.each do |user|
         score = params[:"#{user.id}"]
