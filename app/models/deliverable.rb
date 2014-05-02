@@ -350,17 +350,28 @@ class Deliverable < ActiveRecord::Base
   # To update the grade received by the student
   def update_grade(params, is_student_visible, current_user_id)
     error_msg = []
+    unless (self.course.faculty.include?(User.find_by_id current_user_id))
+      error_msg << "Current user does not have permission to update grade!"
+      return error_msg
+    end
+
+    if (params.nil? || is_student_visible.nil? || current_user_id.nil?)
+      error_msg << "Trying to update grade with nil parameters!"
+      return error_msg
+    end
+
     if self.assignment.is_team_deliverable?
       self.team.members.each do |user|
         score = params[:"#{user.id}"]
+
         if Grade.give_grade(self.course_id, self.assignment.id, user.id, score, is_student_visible, current_user_id)==false
           error_msg << "Grade given to " + user.human_name + " is invalid!"
         end
       end
     else
       score = params[:"#{self.creator_id}"]
-      unless Grade.give_grade(self.course_id, self.assignment.id, self.creator_id, score, is_student_visible, current_user_id)
 
+      unless Grade.give_grade(self.course_id, self.assignment.id, self.creator_id, score, is_student_visible, current_user_id)
         error_msg << "Grade given to " + self.creator.human_name + " is invalid!"
       end
     end
@@ -403,14 +414,16 @@ class Deliverable < ActiveRecord::Base
   #Todo: rename get_status_for_every_individual to status_for_every_individual
   # To get the status of deliverable by student for is it graded or not.
   def get_status_for_every_individual(student_id)
-    return :unknonwn if self.assignment.nil? #(guard for old deliverables)
-    grade = Grade.get_grade(self.course.id, self.assignment.id, student_id)
-    if grade.nil?
-      return :ungraded
-    elsif !grade.is_student_visible?
-      return :drafted
-    else
-      return :graded
+    unless (student_id.nil?)
+      return :unknonwn if self.assignment.nil? #(guard for old deliverables)
+      grade = Grade.get_grade(self.course.id, self.assignment.id, student_id)
+      if grade.nil?
+        return :ungraded
+      elsif !grade.is_student_visible?
+        return :drafted
+      else
+        return :graded
+      end
     end
   end
 
@@ -434,12 +447,14 @@ class Deliverable < ActiveRecord::Base
   end
 
   def last_graded_by_for_every_individual(student_id)
-    return :unknonwn if self.assignment.nil? #(guard for old deliverables)
-    grade = Grade.get_grade(self.course.id, self.assignment.id, student_id)
-    if grade.nil?
-      return nil
-    else
-      return User.find_by_id(grade.last_graded_by) unless grade.last_graded_by.nil?
+    unless (student_id.nil?)
+      return :unknonwn if self.assignment.nil? #(guard for old deliverables)
+      grade = Grade.get_grade(self.course.id, self.assignment.id, student_id)
+      if grade.nil?
+        return nil
+      else
+        return User.find_by_id(grade.last_graded_by) unless grade.last_graded_by.nil?
+      end
     end
   end
 
